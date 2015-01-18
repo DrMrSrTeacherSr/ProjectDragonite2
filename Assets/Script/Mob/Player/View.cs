@@ -24,18 +24,42 @@ public class View : MonoBehaviour {
 		position = new Rect(0,0,Screen.width,Screen.height);
 		Print(www.text);
 
+
+		WWWForm form = new WWWForm();
+		form.AddField("title","The one");
+		form.AddField("subtitle","OMG");
+		www = new WWW("hidden-sands-4551.herokuapp.com/register",form);
+		yield return www;
+		Print (www.text);
+
 	}
 
 
 	public void Print(string str){
 		Text text = Instantiate (sample) as Text;
-		text.text = "> " + str;
-		text.transform.SetParent(parent);
-		field.IsActive();
+		if(str.StartsWith("/")){
+			Print ("Handling Post Request:");
+			Command(str);
+			Print ("Post Handled:");
+		}else{
+			text.text = "> " + str;
+			text.transform.SetParent(parent);
+			text = Instantiate (sample) as Text;
+			text.transform.SetParent(parent);
+			field.IsActive();
+			inputField.text = "";
+		}
 
 	}
 
-
+	public IEnumerator Command(string str){
+		WWWForm form = new WWWForm();
+		form.AddField("title","The one");
+		form.AddField("subtitle","OMG");
+		www = new WWW("hidden-sands-4551.herokuapp.com/register",form);
+		yield return www;
+		Print (www.error);
+	}
 
 }
 
